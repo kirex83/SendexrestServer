@@ -17,9 +17,9 @@ app.use(bodyParser.json())
 mongoose.connect(process.env.URLDB, { useNewUrlParser: true, useCreateIndex: true, useUnifiedTopology: true }, (err, res) => {
     if (err) throw err;
 
-    console.log('Base de Datos Online');
+    console.log('Base de Datos Online ' + process.env.URLDB);
 })
 
 app.listen(process.env.PORT, () => {
-    console.log("escuchando el server 3000");
+    console.log('escuchando el server ' + process.env.PORT);
 })
