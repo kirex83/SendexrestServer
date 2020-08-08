@@ -1,12 +1,14 @@
 const express = require('express');
 const _ = require('underscore');
 const Usuario = require('../../models/usuario');
-const { VerificaToken } = require('../../Middlewares/autenticacion')
+const { VerificaToken, IsAdminRole } = require('../../Middlewares/autenticacion')
 const app = express();
 const bcrypt = require('bcrypt');
+const cors = require('cors');
 
 
-
+app.use(cors());
+app.options('*', cors());
 
 app.get('/usuario', VerificaToken, (req, res) => {
 
@@ -42,7 +44,7 @@ app.get('/usuario', VerificaToken, (req, res) => {
 
 });
 
-app.post('/usuario/', function(req, res) {
+app.post('/usuario/', [VerificaToken, IsAdminRole], function(req, res) {
 
     let body = req.body;
 

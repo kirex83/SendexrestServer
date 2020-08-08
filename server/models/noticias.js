@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const uniqueValidator = require('mongoose-unique-validator');
 
 
 
@@ -14,9 +13,7 @@ let Schema = mongoose.Schema;
 let NoticiaSchema = new Schema({
     title: {
         type: String,
-        unique: true,
         required: [true, 'Title of the new is required']
-
     },
     subtitle: {
         type: String,
@@ -26,11 +23,22 @@ let NoticiaSchema = new Schema({
         type: String,
         required: [true, 'Description is required']
     },
+    category: {
+        type: Schema.Types.ObjectId,
+        ref: 'Ncategoria'
+    },
     date: {
         type: Date,
-        required: [true, 'Size of the product']
+        required: true,
+        default: Date.now
     },
-
+    img: {
+        type: String
+    },
+    usuario: {
+        type: Schema.Types.ObjectId,
+        ref: 'Usuario'
+    },
     estado: {
         type: Boolean,
         default: true
@@ -44,6 +52,5 @@ NoticiaSchema.methods.toJSON = function() {
     return noticaObect;
 }
 
-NoticiaSchema.plugin(uniqueValidator, { message: '{PATH} must be unique' });
 
-module.exports = mongoose.model('Noticia', NoticiaSchema);
+module.exports = mongoose.model('News', NoticiaSchema);

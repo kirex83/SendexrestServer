@@ -2,6 +2,9 @@ const express = require('express');
 const fileUpload = require('express-fileupload');
 const app = express();
 const Usuario = require('../../models/usuario');
+const Producto = require('../../models/productos')
+const News = require('../../models/noticias')
+const Contenido = require('../../models/contenido')
 const fs = require('fs');
 const path = require('path');
 
@@ -23,7 +26,7 @@ app.put('/uploads/:tipo/:id', (req, res) => {
             });
     }
 
-    let tiposvalidos = ['usuarios', 'productos'];
+    let tiposvalidos = ['usuarios', 'productos', 'noticias', 'contenido'];
 
     if (tiposvalidos.indexOf(tipo) < 0) {
         return res.status(400).json({
@@ -66,7 +69,7 @@ app.put('/uploads/:tipo/:id', (req, res) => {
             })
 
         //aqui ya se que la imagen esta en file system      
-        imagenUsuario(id, res, nombrearchivo);
+        subirPorTipo(tipo, id, res, nombrearchivo);
 
     });
 
@@ -74,44 +77,162 @@ app.put('/uploads/:tipo/:id', (req, res) => {
 
 
 
-function imagenUsuario(id, res, nombrearchivo) {
+function subirPorTipo(tipo, id, res, nombrearchivo) {
 
-    Usuario.findById(id, (err, usuarioDB) => {
-        if (err) {
-            borraArchivo(nombrearchivo, 'usuarios');
+    if (tipo === 'usuarios') {
+        Usuario.findById(id, (err, usuarioDB) => {
+            if (err) {
+                borraArchivo(nombrearchivo, 'usuarios');
 
-            return res.status(500).json({
-                ok: true,
-                err
-            });
-        }
+                return res.status(500).json({
+                    ok: true,
+                    err
+                });
+            }
 
-        if (!usuarioDB) {
-            borraArchivo(nombrearchivo, 'usuarios');
-            return res.status(400).json({
-                ok: true,
-                err: {
-                    message: 'Usuario no existe'
-                }
-            });
-        }
+            if (!usuarioDB) {
+                borraArchivo(nombrearchivo, 'usuarios');
+                return res.status(400).json({
+                    ok: true,
+                    err: {
+                        message: 'Usuario no existe'
+                    }
+                });
+            }
 
-        borraArchivo(usuarioDB.img, 'usuarios');
+            usuarioDB.img = nombrearchivo;
 
-        usuarioDB.img = nombrearchivo;
+            usuarioDB.save((err, usuarioGuardado) => {
 
-        usuarioDB.save((err, usuarioGuardado) => {
+                res.json({
+                    ok: true,
+                    usuario: usuarioGuardado,
+                    img: nombrearchivo
+                });
 
-            res.json({
-                ok: true,
-                usuario: usuarioGuardado,
-                img: nombrearchivo
-            });
-
-        })
+            })
 
 
-    });
+        });
+    }
+    if (tipo === 'productos') {
+        Producto.findById(id, (err, productoDB) => {
+            if (err) {
+                borraArchivo(nombrearchivo, tipo);
+
+                return res.status(500).json({
+                    ok: true,
+                    err
+                });
+            }
+
+            if (!productoDB) {
+                borraArchivo(nombrearchivo, tipo);
+                return res.status(400).json({
+                    ok: true,
+                    err: {
+                        message: 'Producto no existe'
+                    }
+                });
+            }
+
+
+
+            productoDB.img = nombrearchivo;
+
+            productoDB.save((err, productoGuardado) => {
+
+                res.json({
+                    ok: true,
+                    Producto: productoGuardado,
+                    img: nombrearchivo
+                });
+
+            })
+
+
+        });
+    }
+
+    if (tipo === 'noticias') {
+        News.findById(id, (err, noticiaDB) => {
+            if (err) {
+                borraArchivo(nombrearchivo, tipo);
+
+                return res.status(500).json({
+                    ok: true,
+                    err
+                });
+            }
+
+            if (!noticiaDB) {
+                borraArchivo(nombrearchivo, tipo);
+                return res.status(400).json({
+                    ok: true,
+                    err: {
+                        message: 'Noticia no existe'
+                    }
+                });
+            }
+            if (noticiaDB.img.length > 0) {
+                borraArchivo(noticiaDB.img, tipo);
+            }
+
+            noticiaDB.img = nombrearchivo;
+
+            noticiaDB.save((err, noticiaGuardado) => {
+
+                res.json({
+                    ok: true,
+                    noticia: noticiaGuardado,
+                    img: nombrearchivo
+                });
+
+            })
+
+
+        });
+    }
+    if (tipo === 'contenido') {
+        Contenido.findById(id, (err, contentDB) => {
+            if (err) {
+                borraArchivo(nombrearchivo, tipo);
+
+                return res.status(500).json({
+                    ok: true,
+                    err
+                });
+            }
+
+            if (!contentDB) {
+                borraArchivo(nombrearchivo, tipo);
+                return res.status(400).json({
+                    ok: true,
+                    err: {
+                        message: 'Contenido no existe'
+                    }
+                });
+            }
+            if (contentDB.img.length > 0) {
+                borraArchivo(contentDB.img, tipo);
+            }
+
+            contentDB.img = nombrearchivo;
+
+            contentDB.save((err, contentGuardado) => {
+
+                res.json({
+                    ok: true,
+                    noticia: contentGuardado,
+                    img: nombrearchivo
+                });
+
+            })
+
+
+        });
+    }
+
 }
 
 function imagenProducto() {

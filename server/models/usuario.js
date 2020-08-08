@@ -29,6 +29,14 @@ let usuarioSchema = new Schema({
         type: String,
         require: false
     },
+    address: {
+        type: String,
+        require: false
+    },
+    phone: {
+        type: String,
+        require: false
+    },
     role: {
         type: String,
         default: 'USER_ROLE',

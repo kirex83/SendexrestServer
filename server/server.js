@@ -9,6 +9,7 @@ const app = express();
 // parse application/x - www - form - urlencoded
 app.use(bodyParser.urlencoded({ extended: false }))
 
+
 //configuracion global de rutas
 app.use(require('./config/routes/index'));
 // parse application/json

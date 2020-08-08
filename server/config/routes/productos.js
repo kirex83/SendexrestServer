@@ -3,13 +3,14 @@ const _ = require('underscore');
 const Producto = require('../../models/productos');
 const { VerificaToken } = require('../../Middlewares/autenticacion')
 const app = express();
-const bcrypt = require('bcrypt');
-const { request } = require('./categoria');
+const cors = require('cors');
 
 
+app.use(cors());
+app.options('*', cors());
 
 
-app.get('/producto', VerificaToken, (req, res) => {
+app.get('/producto', (req, res) => {
 
     let desde = req.query.desde || 0;
     desde = Number(desde);
@@ -29,7 +30,6 @@ app.get('/producto', VerificaToken, (req, res) => {
                     err
                 });
             }
-
             Producto.count({ estado: true }, (err, conteo) => {
                 res.json({
                     ok: true,
@@ -37,8 +37,6 @@ app.get('/producto', VerificaToken, (req, res) => {
                     producto
                 });
             })
-
-
         })
 
 });
@@ -77,7 +75,7 @@ app.get('/producto/:id', VerificaToken, (req, res) => {
 
 //buscar productos
 
-app.get('/producto/buscar/:termino', VerificaToken, (req, res) => {
+app.get('/producto/buscar/:termino', (req, res) => {
 
     let termino = req.params.termino;
 

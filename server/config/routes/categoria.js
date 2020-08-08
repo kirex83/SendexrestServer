@@ -4,9 +4,14 @@ const Categoria = require('../../models/categoria');
 const { VerificaToken } = require('../../Middlewares/autenticacion');
 const usuario = require('../../models/usuario');
 const app = express();
+const cors = require('cors');
 
 
-app.get('/categoria', VerificaToken, (req, res) => {
+app.use(cors());
+app.options('*', cors());
+
+
+app.get('/categoria', (req, res) => {
     //se pueden agregar multiples populates se se cuneta con mas id
     Categoria.find({})
         .populate('usuario', 'nombre email')

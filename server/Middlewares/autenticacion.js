@@ -25,4 +25,23 @@ let VerificaToken = (req, res, next) => {
     })
 };
 
-module.exports = { VerificaToken };
+let IsAdminRole = (req, res, next) => {
+
+    let usuario = req.usuario;
+    let Role = usuario.role;
+
+    if (Role === 'ADMIN_ROLE') {
+        next();
+    } else {
+        return res.status(401).json({
+            ok: false,
+            err: {
+                message: 'You are not and admin'
+            }
+        });
+    }
+
+
+};
+
+module.exports = { VerificaToken, IsAdminRole };
