@@ -223,7 +223,7 @@ function subirPorTipo(tipo, id, res, nombrearchivo) {
 
                 res.json({
                     ok: true,
-                    noticia: contentGuardado,
+                    contenido: contentGuardado,
                     img: nombrearchivo
                 });
 

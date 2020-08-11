@@ -91,10 +91,10 @@ app.put('/contenido/:id', [VerificaToken, IsAdminRole], (req, res) => {
             });
         }
 
-        contenidoDB.pathsection = body.nombre;
-        contenidoDB.type = body.categoria;
-        contenidoDB.position = body.description;
-        contenidoDB.url = body.size;
+        contenidoDB.pathsection = body.pathsection;
+        contenidoDB.type = body.type;
+        contenidoDB.position = body.position;
+        contenidoDB.url = body.url;
         contenidoDB.img = body.img;
         contenidoDB.texto = body.texto;
         contenidoDB.estado = true;
