@@ -7,11 +7,29 @@ const News = require('../../models/noticias')
 const Contenido = require('../../models/contenido')
 const fs = require('fs');
 const path = require('path');
+const aws = require('aws-sdk');
+const multer = require('multer');
+const multerS3 = require('multer-s3');
+
 
 app.use(fileUpload());
 
 
-app.put('/uploads/:tipo/:id', (req, res) => {
+const s3 = new aws.S3({
+    accessKeyId: process.env.AWS_ACCESS_KEY,
+    secretAccessKey: process.env.AWS_SECRET_ACCESS,
+    region: process.env.AWS_REGION
+});
+
+const storage = multer.memoryStorage({
+    destination: function(req, file, callback) {
+        callback(null, '')
+    }
+})
+
+const uploadAWS = multer({ storage }).single('archivo')
+
+app.put('/uploads/:tipo/:id', uploadAWS, (req, res) => {
 
     let tipo = req.params.tipo;
     let id = req.params.id;
@@ -59,19 +77,35 @@ app.put('/uploads/:tipo/:id', (req, res) => {
     // cambiar al nombre al arcivo
 
     let nombrearchivo = `${id}-${ new Date().getMilliseconds () }.${ extension}`
+    let imgbuffer = new Buffer(req.files.archivo.data.buffer);
+    const params = {
+        Bucket: process.env.AWS_BUCKET_NAME,
+        Key: nombrearchivo,
+        Body: imgbuffer,
+        acl: 'public-read',
+        // ContentType: `image/${ extension}`
+        ContentType: req.files.archivo.mimetype
+    }
+
+    s3.upload(params, (error, data) => {
+        if (error) {
+            res.status(500).send(error)
+        }
+        subirPorTipo(tipo, id, res, data.Location);
+    })
 
 
-    imagen.mv(`uploads/${ tipo }/${ nombrearchivo }`, (err) => {
-        if (err)
-            return res.status(500).json({
-                ok: false,
-                err
-            })
+    // imagen.mv(`uploads/${ tipo }/${ nombrearchivo }`, (err) => {
+    //     if (err)
+    //         return res.status(500).json({
+    //             ok: false,
+    //             err
+    //         })
 
-        //aqui ya se que la imagen esta en file system      
-        subirPorTipo(tipo, id, res, nombrearchivo);
+    //aqui ya se que la imagen esta en file system      
+    //subirPorTipo(tipo, id, res, nombrearchivo);
 
-    });
+    //    });
 
 });
 
@@ -136,8 +170,6 @@ function subirPorTipo(tipo, id, res, nombrearchivo) {
                 });
             }
 
-
-
             productoDB.img = nombrearchivo;
 
             productoDB.save((err, productoGuardado) => {
@@ -153,7 +185,6 @@ function subirPorTipo(tipo, id, res, nombrearchivo) {
 
         });
     }
-
     if (tipo === 'noticias') {
         News.findById(id, (err, noticiaDB) => {
             if (err) {
@@ -217,6 +248,8 @@ function subirPorTipo(tipo, id, res, nombrearchivo) {
                 borraArchivo(contentDB.img, tipo);
             }
 
+
+
             contentDB.img = nombrearchivo;
 
             contentDB.save((err, contentGuardado) => {
@@ -247,5 +280,7 @@ function borraArchivo(nombreImagen, tipo) {
         fs.unlinkSync(pathURLImagen)
     }
 }
+
+
 
 module.exports = app;
