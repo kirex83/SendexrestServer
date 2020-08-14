@@ -43,7 +43,7 @@ process.env.CLIENT_ID = process.env.CLIENT_ID || '544112105669-6887d0ho1bhde15sn
 
 //AWS CONFIGURATION
 
-process.env.AWS_SECRET_ACCESS = process.env.AWS_SECRET_ACCESS || 'MCe5tqiObXk1Zva7fZhjkaAY8edE6jWoR0fjDMKQ';
-process.env.AWS_ACCESS_KEY = process.env.AWS_ACCESS_KEY || 'AKIAZIEXVDFMTTXOWZJW';
-process.env.AWS_REGION = process.env.AWS_REGION || 'us-east-2';
-process.env.AWS_BUCKET_NAME = process.env.AWS_BUCKET_NAME || 'sendex-contenido';
+process.env.AWS_SECRET_ACCESS = process.env.AWS_SECRET_ACCESS;
+process.env.AWS_ACCESS_KEY = process.env.AWS_ACCESS_KEY;
+process.env.AWS_REGION = process.env.AWS_REGION;
+process.env.AWS_BUCKET_NAME = process.env.AWS_BUCKET_NAME;
