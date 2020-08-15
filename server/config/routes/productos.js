@@ -220,7 +220,7 @@ app.put('/producto/:id', VerificaToken, (req, res) => {
 
 
 //PARA ACTUALIZAR UN STATUS
-app.delete('/producto/:id', function(req, res) {
+app.delete('/producto/:id', VerificaToken, function(req, res) {
     let id = req.params.id;
     let cambiaEstado = {
         estado: false
