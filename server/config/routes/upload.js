@@ -21,6 +21,8 @@ const s3 = new aws.S3({
     region: process.env.AWS_REGION
 });
 
+
+
 const storage = multer.memoryStorage({
     destination: function(req, file, callback) {
         callback(null, '')
@@ -77,20 +79,22 @@ app.put('/uploads/:tipo/:id', uploadAWS, (req, res) => {
     // cambiar al nombre al arcivo
 
     let nombrearchivo = `${id}-${ new Date().getMilliseconds () }.${ extension}`
-    let imgbuffer = new Buffer(req.files.archivo.data.buffer);
+    let imgbuffer = Buffer.from(req.files.archivo.data);
+    console.log(req.files.archivo);
     const params = {
         Bucket: process.env.AWS_BUCKET_NAME,
         Key: nombrearchivo,
         Body: imgbuffer,
         acl: 'public-read',
-        // ContentType: `image/${ extension}`
         ContentType: req.files.archivo.mimetype
     }
 
     s3.upload(params, (error, data) => {
         if (error) {
+            console.log(error);
             res.status(500).send(error)
         }
+        console.log(tipo + ' ' + id);
         subirPorTipo(tipo, id, res, data.Location);
     })
 
@@ -159,6 +163,7 @@ function subirPorTipo(tipo, id, res, nombrearchivo) {
                     err
                 });
             }
+            console.log(productoDB);
 
             if (!productoDB) {
                 borraArchivo(nombrearchivo, tipo);

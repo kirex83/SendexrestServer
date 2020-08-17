@@ -81,7 +81,7 @@ app.get('/noticiasxcat', (req, res) => {
 
 
 
-app.get('/noticas/:id', (req, res) => {
+app.get('/noticias/:id', (req, res) => {
 
     let id = req.params.id;
     News.findById(id, (err, noticiaDB) => {
