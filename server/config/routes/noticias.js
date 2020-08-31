@@ -31,7 +31,7 @@ app.get('/noticias', (req, res) => {
                 });
             }
 
-            News.count({ estado: true }, (err, conteo) => {
+            News.estimatedDocumentCount({ estado: true }, (err, conteo) => {
                 res.json({
                     ok: true,
                     conteo: conteo,
@@ -66,7 +66,7 @@ app.get('/noticiasxcat', (req, res) => {
                 });
             }
 
-            News.count({ estado: true, category: categoria }, (err, conteo) => {
+            News.estimatedDocumentCount({ estado: true, category: categoria }, (err, conteo) => {
                 res.json({
                     ok: true,
                     conteo: conteo,
@@ -195,16 +195,16 @@ app.put('/noticias/:id', [VerificaToken, IsAdminRole], (req, res) => {
             });
         }
 
-        noticiaDB.title = body.nombre;
-        noticiaDB.subtitle = body.categoria;
-        noticiaDB.content = body.description;
-        noticiaDB.date = body.size;
+
+        noticiaDB.title = body.title;
+        noticiaDB.subtitle = body.subtitle;
+        noticiaDB.content = body.content;
+        // noticiaDB.date = body.date;
         noticiaDB.img = body.img;
         noticiaDB.category = body.category;
         noticiaDB.estado = body.estado;
 
-
-
+        console.log(noticiaDB);
 
         noticiaDB.save(noticiaDB, (err, noticiaGuardada) => {
             if (err) {

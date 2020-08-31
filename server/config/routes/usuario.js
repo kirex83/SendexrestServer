@@ -31,7 +31,7 @@ app.get('/usuario', VerificaToken, (req, res) => {
                 });
             }
 
-            Usuario.count({}, (err, conteo) => {
+            Usuario.estimatedDocumentCount({}, (err, conteo) => {
                 res.json({
                     ok: true,
                     conteo: conteo,

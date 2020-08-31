@@ -24,7 +24,7 @@ app.get('/contenido', (req, res) => {
                 });
             }
 
-            Contenido.count({}, (err, conteo) => {
+            Contenido.estimatedDocumentCount({}, (err, conteo) => {
                 res.json({
                     ok: true,
                     conteo: conteo,

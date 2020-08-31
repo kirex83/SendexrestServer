@@ -24,7 +24,7 @@ app.get('/ncategoria', (req, res) => {
                 });
             }
 
-            Ncategoria.count({}, (err, conteo) => {
+            Ncategoria.estimatedDocumentCount({}, (err, conteo) => {
                 res.json({
                     ok: true,
                     conteo: conteo,

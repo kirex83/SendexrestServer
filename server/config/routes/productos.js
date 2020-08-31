@@ -30,7 +30,7 @@ app.get('/producto', (req, res) => {
                     err
                 });
             }
-            Producto.count({ estado: true }, (err, conteo) => {
+            Producto.estimatedDocumentCount({ estado: true }, (err, conteo) => {
                 res.json({
                     ok: true,
                     conteo: conteo,

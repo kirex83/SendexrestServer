@@ -39,7 +39,7 @@ process.env.URLDB = urlDB;
 
 
 
-process.env.CLIENT_ID = process.env.CLIENT_ID || '544112105669-6887d0ho1bhde15sn060b2pt08kug1ve.apps.googleusercontent.com';
+process.env.CLIENT_ID = process.env.CLIENT_ID;
 
 //AWS CONFIGURATION
 
@@ -47,3 +47,11 @@ process.env.AWS_SECRET_ACCESS = process.env.AWS_SECRET_ACCESS;
 process.env.AWS_ACCESS_KEY = process.env.AWS_ACCESS_KEY;
 process.env.AWS_REGION = process.env.AWS_REGION;
 process.env.AWS_BUCKET_NAME = process.env.AWS_BUCKET_NAME;
+
+//email config
+process.env.EMAILACC = process.env.EMAILACC;
+process.env.EMAILPASS = process.env.EMAILPASS;
+process.env.EMAILTO = process.env.EMAILTO;
+
+//captcha
+process.env.CAPTCHASK = process.env.CAPTCHASK
