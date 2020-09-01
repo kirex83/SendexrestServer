@@ -54,4 +54,4 @@ process.env.EMAILPASS = process.env.EMAILPASS;
 process.env.EMAILTO = process.env.EMAILTO;
 
 //captcha
-process.env.CAPTCHASK = process.env.CAPTCHASK
+process.env.CAPTCHASK = process.env.CAPTCHASK;
