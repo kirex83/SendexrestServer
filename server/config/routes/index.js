@@ -10,7 +10,7 @@ app.use(require('./noticias'));
 app.use(require('./imagenes'));
 app.use(require('./ncategoria'));
 app.use(require('./contenido'));
-app.use(require('./contacto'));
+app.use(require('./Contacto'));
 
 
 
